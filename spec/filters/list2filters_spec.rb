@@ -43,7 +43,7 @@ describe LogStash::Filters::List2fields do
       end
 
       it "should remove the input field" do       
-        expect(event["message"]).to be_empty
+        expect(event["message"]).to be_nil
       end # it
     end # context
 
