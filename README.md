@@ -13,9 +13,13 @@ You can download the plugin from [rubygems](https://rubygems.org/gems/logstash-f
 
 ## Documentation
 
-This filter rearranges key-value-pairs from the following structure
+This filter rearranges key-value-pairs from the following structures
+
+	example 1: 			"awesome_list" => [ { "animal" => "horse"} , {"food" => "bacon"} ]
+
+or
   
-	"awesome_list" => [ { "key" => "animal", "value" => "horse"} , {"key" => "food", "value" => "bacon"} ]
+	example 2: 			"awesome_list" => [ { "key" => "animal", "value" => "horse"} , {"key" => "food", "value" => "bacon"} ]
 
 into separate logstash event fields:
 
@@ -25,11 +29,11 @@ into separate logstash event fields:
 ## Configuration
 
 * source 	: name of the field which contains the list of key value pairs (required). In the example above, this would be "awesome_list".
-* key 		: name of the key for the key field in the list of key value pairs. Headache? Example: If this is your incoming data:
-	"awesome_list" => [ { "name" => "animal", "content" => "horse"} , {"name" => "food", "content" => "bacon"} ]
-then the key would be "name". Optional, defaults to "key".
-* value 	: name of the key for the value field in the list of key value pairs. In the above example, this would be "content". Optional, defaults to "value".
-* prefix	: string to prepend to the new fields that will be added to the logstash event. Optional, defaults to empty.
+* prefix	: string to prepend to the new fields that will be added to the logstash event. Optional.
+* key 		: optional for example 1, required for example #2: name of the key for the key field in the list of key value pairs. Headache? Example: If this is your incoming data:
+	example 3: 			"awesome_list" => [ { "name" => "animal", "content" => "horse"} , {"name" => "food", "content" => "bacon"} ]
+then the key would be "name".
+* value 	: optional for example 1, required for example #2: name of the key for the value field in the list of key value pairs. In example 3, this would be "content".
 
 
 ## Contributing
