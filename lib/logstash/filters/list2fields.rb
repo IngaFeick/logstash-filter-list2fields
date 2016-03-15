@@ -2,7 +2,6 @@
 require "logstash/filters/base"
 require "logstash/namespace"
 
-# TODO docu
 class LogStash::Filters::List2fields < LogStash::Filters::Base
   
   config_name "list2fields"
@@ -33,9 +32,7 @@ class LogStash::Filters::List2fields < LogStash::Filters::Base
     if !input.nil?  && (input.is_a? Enumerable)
       input.each do |entry|
         begin
-
-          @logger.debug("Entry: " + entry.inspect.to_s) # TODO remove
-
+       
           if @access_by_name
 
             if entry.is_a?(::Hash) # see spec file: test case 1  
@@ -49,10 +46,7 @@ class LogStash::Filters::List2fields < LogStash::Filters::Base
           else # access by position, no key / value names provided
             
             if entry.is_a?(::Hash)  # see spec file: test case 2
-              @logger.debug("Found keys: " + entry.keys.inspect.to_s) # TODO remove
-              @logger.debug("Found values: " + entry.values.inspect.to_s) # TODO remove
               new_key = @prefix.to_s + entry.keys[0].to_s
-              @logger.debug("new key: " + new_key) # TODO remove
               event[new_key] = entry.values[0]
 
             else # it's an object of some unknown class. 
