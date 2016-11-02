@@ -43,7 +43,7 @@ describe LogStash::Filters::List2fields do
       end
 
       it "should remove the input field" do       
-        expect(event["message"]).to be_nil
+        expect(event.get("message")).to be_nil
       end # it
     end # context
 
@@ -58,7 +58,7 @@ describe LogStash::Filters::List2fields do
       end
 
       it "should not remove the input field" do       
-        expect(event["message"]).not_to be_empty
+        expect(event.get("message")).not_to be_empty
       end # it
     end # context
 
@@ -72,8 +72,8 @@ describe LogStash::Filters::List2fields do
       end
 
       it "should have new fields" do
-        expect(event["foo"]).to eq("bar")
-        expect(event["cheese"]).to eq("gorgonzola")
+        expect(event.get("foo")).to eq("bar")
+        expect(event.get("cheese")).to eq("gorgonzola")
       end # it
     end # context
 
@@ -86,8 +86,8 @@ describe LogStash::Filters::List2fields do
       end
 
       it "should have new fields" do
-        expect(event["foo"]).to eq("bar")
-        expect(event["cheese"]).to eq("gorgonzola")
+        expect(event.get("foo")).to eq("bar")
+        expect(event.get("cheese")).to eq("gorgonzola")
       end # it
     end # context
 
@@ -104,12 +104,12 @@ describe LogStash::Filters::List2fields do
       end
 
       it "should have new fields with the prefix in the key" do
-        expect(event["l2f_foo"]).to eq("bar")
-        expect(event["l2f_cheese"]).to eq("gorgonzola")
+        expect(event.get("l2f_foo")).to eq("bar")
+        expect(event.get("l2f_cheese")).to eq("gorgonzola")
       end # it
 
       it "should not overwrite existing fields" do
-        expect(event["cheese"]).to eq("chili")
+        expect(event.get("cheese")).to eq("chili")
       end # it
     end # context
 
@@ -124,8 +124,8 @@ describe LogStash::Filters::List2fields do
       end
 
       it "should have new fields with the prefix in the key" do
-        expect(event["l2f_foo"]).to eq("bar")
-        expect(event["l2f_cheese"]).to eq("gorgonzola")
+        expect(event.get("l2f_foo")).to eq("bar")
+        expect(event.get("l2f_cheese")).to eq("gorgonzola")
       end # it
     end # context
 

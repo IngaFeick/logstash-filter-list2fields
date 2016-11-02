@@ -21,24 +21,33 @@ class LogStash::Filters::List2fields < LogStash::Filters::Base
   # Remove source field after transformation
   config :remove_source, :validate => :boolean, :default => true
 
+  # if you want to have debug information for this plugin only and you dont want to set the whole logstash to debug.
+  config :debug, :validate => :boolean, :default => false
+
   public
   def register
-    @access_by_name = !@key.empty? && !@value.empty?
+    @access_by_name = !@key.empty? && !@value.empty?   
   end # def register
 
   public
   def filter(event)
-    input = event[@source]
-    if !input.nil?  && (input.is_a? Enumerable)
-      input.each do |entry|
+    input = event.get(@source)
+    if !input.nil?  && (input.is_a? Enumerable))      input.each do |entry|
         begin
-       
+          @logger.warn(entry.to_a.to_s)
           if @access_by_name
 
-            if entry.is_a?(::Hash) # see spec file: test case 1  
-              new_key = @prefix.to_s + entry[@key].to_s
-              event[new_key] = entry[@value]
-
+            if entry.is_a?(::Hash) # see spec file: test case 1 
+              if !entry[@key].nil?
+                new_key = @prefix.to_s + entry[@key].to_s
+                value = entry[@value]
+                @logger.info("Adding new field " + new_key + " with value " + value)
+              else # might be a symbol then and we need to convert our keys to :keys
+                new_key = @prefix.to_s + entry[@key.to_sym].to_s
+                value = entry[@value.to_sym]
+                @logger.info("Adding new field " + new_key + ", value " + value)
+              end
+              event.set(new_key, value)
             else # it's an object of some unknown class.
               @logger.warn("Data structure not supported. " + entry.inspect.to_s) 
             end # if is hash
@@ -47,7 +56,7 @@ class LogStash::Filters::List2fields < LogStash::Filters::Base
             
             if entry.is_a?(::Hash)  # see spec file: test case 2
               new_key = @prefix.to_s + entry.keys[0].to_s
-              event[new_key] = entry.values[0]
+              event.set(new_key, entry.values[0])
 
             else # it's an object of some unknown class. 
               @logger.warn("Data structure not supported. " + entry.inspect.to_s)
@@ -61,6 +70,15 @@ class LogStash::Filters::List2fields < LogStash::Filters::Base
       if @remove_source
         event.remove(@source)
       end
+    #else
+    #  if @debug
+    #    if input.nil?
+    #      @logger.info("Field " + @source + " is nil and will be skipped.")
+    #    end
+    #    if !(input.is_a? Enumerable)
+    #      @logger.info("Field " + @source + " is not iterable and will be skipped.")
+    #    end
+    #  end
     end # if input.nil? 
   end # def filter  
 end # class LogStash::Filters::List2fields
