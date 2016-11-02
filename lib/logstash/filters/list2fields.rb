@@ -32,7 +32,8 @@ class LogStash::Filters::List2fields < LogStash::Filters::Base
   public
   def filter(event)
     input = event.get(@source)
-    if !input.nil?  && (input.is_a? Enumerable))      input.each do |entry|
+    if !input.nil?  && (input.is_a? Enumerable)     
+      input.each do |entry|
         begin
           @logger.warn(entry.to_a.to_s)
           if @access_by_name
@@ -70,15 +71,7 @@ class LogStash::Filters::List2fields < LogStash::Filters::Base
       if @remove_source
         event.remove(@source)
       end
-    #else
-    #  if @debug
-    #    if input.nil?
-    #      @logger.info("Field " + @source + " is nil and will be skipped.")
-    #    end
-    #    if !(input.is_a? Enumerable)
-    #      @logger.info("Field " + @source + " is not iterable and will be skipped.")
-    #    end
-    #  end
+    
     end # if input.nil? 
   end # def filter  
 end # class LogStash::Filters::List2fields

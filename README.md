@@ -11,6 +11,10 @@ You can download the plugin from [rubygems](https://rubygems.org/gems/logstash-f
 
 	bin/plugin install logstash-filter-list2fields-$VERSION.gem
 
+## Versions and compatibility
+
+Versions <= 0.1.2 are compatible with logstash 2.x, version 0.1.3 and later are compatible with logstash 5.
+
 ## Documentation
 
 This filter rearranges key-value-pairs from the following structures
